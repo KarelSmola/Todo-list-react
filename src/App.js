@@ -1,13 +1,15 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useContext } from "react";
 import LoginForm from "./components/login/LoginForm";
-import InfoBar from "./components/InfoBar";
+import Navigation from "./components/Navigation";
 import TodoForm from "./components/Todos/TodoForm";
 import TodoList from "./components/Todos/TodoList";
+import AuthContext from "./store/auth-context";
 
 import "./App.css";
 
 function App() {
   const [todoList, setTodoList] = useState([]);
+  const ctx = useContext(AuthContext);
 
   const addTodo = (newTodo) => {
     setTodoList((prevTodos) => [
@@ -26,10 +28,10 @@ function App() {
 
   return (
     <Fragment>
-      <InfoBar />
+      {ctx.isLoggedIn && <Navigation />}
 
-      <LoginForm />
-      <TodoForm onAddTodo={addTodo} />
+      {!ctx.isLoggedIn && <LoginForm />}
+      {ctx.isLoggedIn && <TodoForm onAddTodo={addTodo} />}
       <TodoList todos={todoList} onRemove={deleteTodo} />
     </Fragment>
   );

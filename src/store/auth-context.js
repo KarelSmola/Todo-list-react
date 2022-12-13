@@ -11,12 +11,14 @@ const AuthContext = React.createContext({
   loginSubmitHandler: () => {},
   userNameInput: "",
   emailInput: "",
+  passwordInput: "",
 });
 
 export const AuthContextProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userNameInput, setUserNameInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
 
   const loggedIn = () => {
     setIsLoggedIn(true);
@@ -24,6 +26,7 @@ export const AuthContextProvider = (props) => {
 
   const loggedOut = () => {
     setIsLoggedIn(false);
+    setUserNameInput("");
   };
 
   const userNameChangeHandler = (event) => {
@@ -34,20 +37,32 @@ export const AuthContextProvider = (props) => {
     setEmailInput(event.target.value);
   };
 
-  const passwordChangeHandler = (event) => {};
+  const passwordChangeHandler = (event) => {
+    setPasswordInput(event.target.value);
+  };
 
   const loginSubmitHandler = (event) => {
     event.preventDefault();
 
-    if (userNameInput.trim() === "") {
+    if (!emailInput.includes("@")) {
+      console.log("Write correct email");
       return;
     }
 
-    if (!emailInput.includes("@")) {
+    if (userNameInput.trim().length < 1) {
+      console.log("Write correct name");
+      return;
+    }
+
+    if (passwordInput.trim().length < 6) {
+      console.log("Write correct password");
       return;
     }
 
     setIsLoggedIn(true);
+
+    setEmailInput("");
+    setPasswordInput("");
   };
 
   return (
@@ -63,6 +78,7 @@ export const AuthContextProvider = (props) => {
         loginSubmitHandler,
         userNameInput,
         emailInput,
+        passwordInput,
       }}
     >
       {props.children}

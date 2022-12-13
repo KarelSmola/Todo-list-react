@@ -11,10 +11,12 @@ function App() {
   const [todoList, setTodoList] = useState([]);
   const ctx = useContext(AuthContext);
 
+  const amountTodos = todoList.length;
+
   const addTodo = (newTodo) => {
     setTodoList((prevTodos) => [
-      ...prevTodos,
       { id: Math.random(), title: newTodo },
+      ...prevTodos,
     ]);
   };
 
@@ -28,7 +30,7 @@ function App() {
 
   return (
     <Fragment>
-      {ctx.isLoggedIn && <Navigation />}
+      {ctx.isLoggedIn && <Navigation amountTodos={amountTodos} />}
 
       {!ctx.isLoggedIn && <LoginForm />}
       {ctx.isLoggedIn && <TodoForm onAddTodo={addTodo} />}

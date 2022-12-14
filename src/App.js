@@ -30,10 +30,12 @@ function App() {
 
   return (
     <Fragment>
-      {ctx.isLoggedIn && <Navigation amountTodos={amountTodos} />}
+      {ctx.isLoggedIn && <Navigation />}
 
       {!ctx.isLoggedIn && <LoginForm />}
-      {ctx.isLoggedIn && <TodoForm onAddTodo={addTodo} />}
+      {ctx.isLoggedIn && (
+        <TodoForm onAddTodo={addTodo} amountTodos={amountTodos} />
+      )}
       <TodoList todos={todoList} onRemove={deleteTodo} />
     </Fragment>
   );

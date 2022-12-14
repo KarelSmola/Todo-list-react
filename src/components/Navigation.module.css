@@ -14,17 +14,14 @@
 
 .nav-info {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  gap: 1rem;
 }
 
 .nav-greeting,
 .nav-todos-info {
   font-size: 1.6rem;
   font-weight: 600;
-}
-
-.nav-todos-info {
 }
 
 .logout-btn {

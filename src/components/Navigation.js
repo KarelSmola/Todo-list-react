@@ -4,9 +4,8 @@ import AuthContext from "../store/auth-context";
 import Button from "./UI/Button";
 import classes from "./Navigation.module.css";
 
-const Navigation = (props) => {
+const Navigation = () => {
   const ctx = useContext(AuthContext);
-  console.log(ctx.userName);
 
   return (
     <nav className={classes.nav}>
@@ -14,14 +13,13 @@ const Navigation = (props) => {
         <h1>Todo list</h1>
       </div>
       <div className={classes["nav-info"]}>
-        <p className={classes["nav-greeting"]}>Hello {ctx.userNameInput}</p>
-        <p className={classes["nav-todos-info"]}>
-          You have {props.amountTodos} items to do
+        <p className={classes["nav-greeting"]}>
+          {`User: ${ctx.userNameInput}`}
         </p>
+        <Button className={classes["logout-btn"]} onClick={ctx.loggedOut}>
+          Logout
+        </Button>
       </div>
-      <Button className={classes["logout-btn"]} onClick={ctx.loggedOut}>
-        Logout
-      </Button>
     </nav>
   );
 };

@@ -7,6 +7,18 @@ import classes from "./LoginForm.module.css";
 const LoginForm = () => {
   const ctx = useContext(AuthContext);
 
+  const userNameClasses = ctx.userNameIsInvalid
+    ? `${classes["login-form-input"]} ${classes["invalid-input"]}`
+    : classes["login-form-input"];
+
+  const emailClasses = ctx.emailIsInvalid
+    ? `${classes["login-form-input"]} ${classes["invalid-input"]}`
+    : classes["login-form-input"];
+
+  const passwordClasses = ctx.passwordIsInvalid
+    ? `${classes["login-form-input"]} ${classes["invalid-input"]}`
+    : classes["login-form-input"];
+
   return (
     <form onSubmit={ctx.loginSubmitHandler} className={classes["login-form"]}>
       <div className={classes["label-container"]}>
@@ -14,11 +26,12 @@ const LoginForm = () => {
           Email
         </label>
         <input
-          className={classes["login-form-input"]}
+          className={emailClasses}
           type="text"
           id="email"
           value={ctx.emailInput}
           onChange={ctx.emailChangeHandler}
+          onBlur={ctx.emailBlurHandler}
         />
       </div>
       <div className={classes["label-container"]}>
@@ -26,11 +39,12 @@ const LoginForm = () => {
           User name
         </label>
         <input
-          className={classes["login-form-input"]}
+          className={userNameClasses}
           type="text"
           id="userName"
           value={ctx.userNameInput}
           onChange={ctx.userNameChangeHandler}
+          onBlur={ctx.userNameBlurHandler}
         />
       </div>
       <div className={classes["label-container"]}>
@@ -38,11 +52,12 @@ const LoginForm = () => {
           Password
         </label>
         <input
-          className={classes["login-form-input"]}
+          className={passwordClasses}
           type="password"
           id="password"
           value={ctx.passwordInput}
           onChange={ctx.passwordChangeHandler}
+          onBlur={ctx.passwordBlurHandler}
         />
       </div>
       <Button className={classes["login-btn"]}>Login</Button>

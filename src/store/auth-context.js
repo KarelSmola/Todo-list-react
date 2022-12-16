@@ -6,19 +6,40 @@ const AuthContext = React.createContext({
   loggedIn: () => {},
   loggedOut: () => {},
   userNameChangeHandler: () => {},
+  userNameBlurHandler: () => {},
   emailChangeHandler: () => {},
+  emailBlurHandler: () => {},
   passwordChangeHandler: () => {},
+  passwordBlurHandler: () => {},
   loginSubmitHandler: () => {},
   userNameInput: "",
   emailInput: "",
   passwordInput: "",
+  userNameIsInvalid: "",
+  emailIsInvalid: "",
+  passwordIsInvalid: "",
 });
 
 export const AuthContextProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [userNameInput, setUserNameInput] = useState("");
+  const [userNameBlur, setUserNameBlur] = useState(false);
+
   const [emailInput, setEmailInput] = useState("");
+  const [emailBlur, setEmailBlur] = useState(false);
+
   const [passwordInput, setPasswordInput] = useState("");
+  const [passwordBlur, setPasswordBlur] = useState(false);
+
+  const userNameIsValid = userNameInput.trim().length > 0;
+  const userNameIsInvalid = !userNameIsValid && userNameBlur;
+
+  const emailIsValid = emailInput.includes("@");
+  const emailIsInvalid = !emailIsValid && emailBlur;
+
+  const passwordIsValid = passwordInput.trim().length > 5;
+  const passwordIsInvalid = !passwordIsValid && passwordBlur;
 
   const loggedIn = () => {
     setIsLoggedIn(true);
@@ -33,26 +54,28 @@ export const AuthContextProvider = (props) => {
     setUserNameInput(event.target.value);
   };
 
+  const userNameBlurHandler = () => {
+    setUserNameBlur(true);
+  };
+
   const emailChangeHandler = (event) => {
     setEmailInput(event.target.value);
+  };
+
+  const emailBlurHandler = () => {
+    setEmailBlur(true);
   };
 
   const passwordChangeHandler = (event) => {
     setPasswordInput(event.target.value);
   };
 
+  const passwordBlurHandler = () => {
+    setPasswordBlur(true);
+  };
+
   const loginSubmitHandler = (event) => {
     event.preventDefault();
-
-    if (!emailInput.includes("@")) {
-      console.log("Write correct email");
-      return;
-    }
-
-    if (userNameInput.trim().length < 1) {
-      console.log("Write correct name");
-      return;
-    }
 
     if (passwordInput.trim().length < 6) {
       console.log("Write correct password");
@@ -63,6 +86,9 @@ export const AuthContextProvider = (props) => {
 
     setEmailInput("");
     setPasswordInput("");
+    setUserNameBlur(false);
+    setEmailBlur(false);
+    setPasswordBlur(false);
   };
 
   return (
@@ -73,12 +99,18 @@ export const AuthContextProvider = (props) => {
         loggedIn,
         loggedOut,
         userNameChangeHandler,
+        userNameBlurHandler,
         emailChangeHandler,
+        emailBlurHandler,
         passwordChangeHandler,
+        passwordBlurHandler,
         loginSubmitHandler,
         userNameInput,
         emailInput,
         passwordInput,
+        userNameIsInvalid,
+        emailIsInvalid,
+        passwordIsInvalid,
       }}
     >
       {props.children}

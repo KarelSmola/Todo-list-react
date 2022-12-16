@@ -60,7 +60,9 @@ const LoginForm = () => {
           onBlur={ctx.passwordBlurHandler}
         />
       </div>
-      <Button className={classes["login-btn"]}>Login</Button>
+      <Button disabled={!ctx.formIsValid} className={classes["login-btn"]}>
+        Login
+      </Button>
     </form>
   );
 };

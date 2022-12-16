@@ -12,6 +12,7 @@ const AuthContext = React.createContext({
   passwordChangeHandler: () => {},
   passwordBlurHandler: () => {},
   loginSubmitHandler: () => {},
+  formIsValid: false,
   userNameInput: "",
   emailInput: "",
   passwordInput: "",
@@ -40,6 +41,12 @@ export const AuthContextProvider = (props) => {
 
   const passwordIsValid = passwordInput.trim().length > 5;
   const passwordIsInvalid = !passwordIsValid && passwordBlur;
+
+  let formIsValid = false;
+
+  if (userNameIsValid && emailIsValid && passwordIsValid) {
+    formIsValid = true;
+  }
 
   const loggedIn = () => {
     setIsLoggedIn(true);
@@ -77,11 +84,6 @@ export const AuthContextProvider = (props) => {
   const loginSubmitHandler = (event) => {
     event.preventDefault();
 
-    if (passwordInput.trim().length < 6) {
-      console.log("Write correct password");
-      return;
-    }
-
     setIsLoggedIn(true);
 
     setEmailInput("");
@@ -105,6 +107,7 @@ export const AuthContextProvider = (props) => {
         passwordChangeHandler,
         passwordBlurHandler,
         loginSubmitHandler,
+        formIsValid,
         userNameInput,
         emailInput,
         passwordInput,

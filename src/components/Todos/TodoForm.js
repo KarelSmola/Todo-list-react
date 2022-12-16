@@ -1,28 +1,34 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import AuthContext from "../../store/auth-context";
+import useInput from "../../hooks/use-input";
 
 import Button from "../UI/Button";
 import classes from "./TodoForm.module.css";
 
 const TodoForm = (props) => {
-  const [inputTodo, setInputTodo] = useState("");
-  const ctx = useContext(AuthContext);
+  const {
+    inputValue: inputTodo,
+    valueIsValid: todoIsValid,
+    valueIsInvalid: todoIsInvalid,
+    valueChangeHandler: todoChangeHandler,
+    valueBlurHandler: todoBlurHandler,
+    valueInputError: todoInputError,
+    resetValue: resetTodo,
+  } = useInput((value) => value !== "");
 
-  const todoChangeHandler = (event) => {
-    setInputTodo(event.target.value);
-  };
+  const ctx = useContext(AuthContext);
 
   const todoSubmitHandler = (event) => {
     event.preventDefault();
 
-    if (inputTodo.trim().length < 1) {
-      console.log("Write correct todo");
+    if (!todoIsValid) {
+      todoInputError();
       return;
     }
 
     props.onAddTodo(inputTodo);
 
-    setInputTodo("");
+    resetTodo();
   };
 
   const emojis = (todos) => {
@@ -57,6 +63,10 @@ const TodoForm = (props) => {
   // &#128528; neutral face 😐
   // &#128533; confused face 😕
 
+  const todoInputClasses = todoIsInvalid
+    ? `${classes["todo-input"]} ${classes["todo-invalid-input"]}`
+    : classes["todo-input"];
+
   return (
     <form
       className={todoFormBcgColor(props.amountTodos)}
@@ -72,10 +82,11 @@ const TodoForm = (props) => {
           New todo
         </label>
         <input
-          className={classes["todo-input"]}
+          className={todoInputClasses}
           type="text"
           id="todo"
           onChange={todoChangeHandler}
+          onBlur={todoBlurHandler}
           value={inputTodo}
         />
         <Button className={classes["todo-btn"]}>Add Todo</Button>

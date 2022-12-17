@@ -36,7 +36,7 @@ function App() {
       {ctx.isLoggedIn && (
         <TodoForm onAddTodo={addTodo} amountTodos={amountTodos} />
       )}
-      <TodoList todos={todoList} onRemove={deleteTodo} />
+      {ctx.isLoggedIn && <TodoList todos={todoList} onRemove={deleteTodo} />}
     </Fragment>
   );
 }

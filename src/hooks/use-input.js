@@ -24,6 +24,14 @@ const UseInput = (validateValue) => {
     setValueBlur(false);
   };
 
+  const resetValueInput = () => {
+    setInputValue("");
+  };
+
+  const resetValueBlur = () => {
+    setValueBlur(false);
+  };
+
   return {
     inputValue,
     valueIsValid,
@@ -32,6 +40,8 @@ const UseInput = (validateValue) => {
     valueBlurHandler,
     valueInputError,
     resetValue,
+    resetValueInput,
+    resetValueBlur,
   };
 };
 

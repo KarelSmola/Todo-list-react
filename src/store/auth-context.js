@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useInput from "../hooks/use-input";
 
 const AuthContext = React.createContext({
   isLoggedIn: false,
@@ -22,25 +23,35 @@ const AuthContext = React.createContext({
 });
 
 export const AuthContextProvider = (props) => {
+  const {
+    inputValue: userNameInput,
+    valueIsValid: userNameIsValid,
+    valueIsInvalid: userNameIsInvalid,
+    valueChangeHandler: userNameChangeHandler,
+    valueBlurHandler: userNameBlurHandler,
+    resetValueInput: userNameInputReset,
+    resetValueBlur: userNameBlurReset,
+  } = useInput((value) => value.trim().length > 0);
+
+  const {
+    inputValue: emailInput,
+    valueIsValid: emailIsValid,
+    valueIsInvalid: emailIsInvalid,
+    valueChangeHandler: emailChangeHandler,
+    valueBlurHandler: emailBlurHandler,
+    resetValue: emailReset,
+  } = useInput((value) => value.includes("@"));
+
+  const {
+    inputValue: passwordInput,
+    valueIsValid: passwordIsValid,
+    valueIsInvalid: passwordIsInvalid,
+    valueChangeHandler: passwordChangeHandler,
+    valueBlurHandler: passwordBlurHandler,
+    resetValue: passwordReset,
+  } = useInput((value) => value.trim().length > 5);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const [userNameInput, setUserNameInput] = useState("");
-  const [userNameBlur, setUserNameBlur] = useState(false);
-
-  const [emailInput, setEmailInput] = useState("");
-  const [emailBlur, setEmailBlur] = useState(false);
-
-  const [passwordInput, setPasswordInput] = useState("");
-  const [passwordBlur, setPasswordBlur] = useState(false);
-
-  const userNameIsValid = userNameInput.trim().length > 0;
-  const userNameIsInvalid = !userNameIsValid && userNameBlur;
-
-  const emailIsValid = emailInput.includes("@");
-  const emailIsInvalid = !emailIsValid && emailBlur;
-
-  const passwordIsValid = passwordInput.trim().length > 5;
-  const passwordIsInvalid = !passwordIsValid && passwordBlur;
 
   let formIsValid = false;
 
@@ -54,31 +65,7 @@ export const AuthContextProvider = (props) => {
 
   const loggedOut = () => {
     setIsLoggedIn(false);
-    setUserNameInput("");
-  };
-
-  const userNameChangeHandler = (event) => {
-    setUserNameInput(event.target.value);
-  };
-
-  const userNameBlurHandler = () => {
-    setUserNameBlur(true);
-  };
-
-  const emailChangeHandler = (event) => {
-    setEmailInput(event.target.value);
-  };
-
-  const emailBlurHandler = () => {
-    setEmailBlur(true);
-  };
-
-  const passwordChangeHandler = (event) => {
-    setPasswordInput(event.target.value);
-  };
-
-  const passwordBlurHandler = () => {
-    setPasswordBlur(true);
+    userNameInputReset();
   };
 
   const loginSubmitHandler = (event) => {
@@ -86,11 +73,9 @@ export const AuthContextProvider = (props) => {
 
     setIsLoggedIn(true);
 
-    setEmailInput("");
-    setPasswordInput("");
-    setUserNameBlur(false);
-    setEmailBlur(false);
-    setPasswordBlur(false);
+    userNameBlurReset();
+    emailReset();
+    passwordReset();
   };
 
   return (
